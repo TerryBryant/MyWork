@@ -8,7 +8,6 @@ using namespace cv;
 
 void circshift(InputOutputArray _out, const Point &_delta)
 {
-    ;
     Mat out = _out.getMat();
     Size sz = out.size();
 
