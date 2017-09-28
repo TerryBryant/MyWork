@@ -78,4 +78,5 @@ int main()
 
 	fftshift(cc);
 	cout << cc << endl;
+	return 1;
 }
