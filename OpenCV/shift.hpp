@@ -5,6 +5,25 @@
 using namespace std;
 using namespace cv;
 
+void fft2(const Mat &src, Mat &Fourier)
+{
+	Mat planes[] = { Mat_<double>(src), Mat::zeros(src.size(),CV_64F) };
+	merge(planes, 2, Fourier);
+	dft(Fourier, Fourier);
+}
+
+void ifft2(const Mat &src, Mat &Fourier)
+{
+	Mat tmp;
+	idft(src, tmp, DFT_INVERSE+DFT_SCALE, 0);
+	vector<Mat> planes;
+	split(tmp, planes);
+	
+	magnitude(planes[0], planes[1], planes[0]); //convert complex to magnitude
+	Fourier = planes[0];
+}
+
+
 void circshift(Mat &out, const Point &delta)
 {
 	Size sz = out.size();
