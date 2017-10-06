@@ -1,3 +1,7 @@
+// implement fft2, ifft2, circshift, fftshift, ifftshift of Matlab using OpenCV
+// Original by @TerryBryant
+// First created in Sep. 25th, 2017
+// add fft2 and ifft2 in Oct. 06th, 2017
 #include <iostream>
 #include <vector>
 #include <opencv2/opencv.hpp>
@@ -7,20 +11,46 @@ using namespace cv;
 
 void fft2(const Mat &src, Mat &Fourier)
 {
-	Mat planes[] = { Mat_<double>(src), Mat::zeros(src.size(),CV_64F) };
-	merge(planes, 2, Fourier);
-	dft(Fourier, Fourier);
+	int mat_type = src.type();
+	assert(mat_type<15); //Unsupported Mat datatype
+
+	if (mat_type < 7)
+	{
+		Mat planes[] = { Mat_<double>(src), Mat::zeros(src.size(),CV_64F) };
+		merge(planes, 2, Fourier);
+		dft(Fourier, Fourier);
+	}
+	else // 7<mat_type<15
+	{
+		Mat tmp;
+		dft(src, tmp);
+		vector<Mat> planes;
+		split(tmp, planes);
+		magnitude(planes[0], planes[1], planes[0]); //Change complex to magnitude
+		Fourier = planes[0];
+	}		
 }
 
 void ifft2(const Mat &src, Mat &Fourier)
 {
-	Mat tmp;
-	idft(src, tmp, DFT_INVERSE+DFT_SCALE, 0);
-	vector<Mat> planes;
-	split(tmp, planes);
-	
-	magnitude(planes[0], planes[1], planes[0]); //convert complex to magnitude
-	Fourier = planes[0];
+	int mat_type = src.type();
+	assert(mat_type<15); //Unsupported Mat datatype
+
+	if (mat_type < 7)
+	{
+		Mat planes[] = { Mat_<double>(src), Mat::zeros(src.size(),CV_64F) };
+		merge(planes, 2, Fourier);
+		dft(Fourier, Fourier, DFT_INVERSE + DFT_SCALE, 0);
+	}
+	else // 7<mat_type<15
+	{
+		Mat tmp;
+		dft(src, tmp, DFT_INVERSE + DFT_SCALE, 0);
+		vector<Mat> planes;
+		split(tmp, planes);
+		magnitude(planes[0], planes[1], planes[0]); //Change complex to magnitude
+		Fourier = planes[0];
+	}
 }
 
 
