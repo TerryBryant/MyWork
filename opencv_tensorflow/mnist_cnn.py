@@ -76,8 +76,7 @@ with tf.name_scope("softmax"):
 # cross entropy
 with tf.name_scope("cross_entropy"):
     cross_entropy = tf.reduce_mean(-tf.reduce_sum(ys * tf.log(prediction), reduction_indices=[1]))
-#cross_entropy = tf.reduce_mean(-tf.reduce_sum(ys*tf.log(prediction), reduction_indices=[1]))
-#cross_entropy = -tf.reduce_sum(ys*tf.log(prediction))
+
 with tf.name_scope("train"):
     train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
