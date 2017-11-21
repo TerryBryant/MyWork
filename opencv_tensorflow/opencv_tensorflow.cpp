@@ -13,9 +13,9 @@ vector<cv::String> readClassNames(const char *filename);
 
 int main()
 {
-	cv::String modelFile = "E:\\ProjectPython\\prj_tensorflow\\trained_model\\frozen_model.pb";
+	cv::String modelFile = "frozen_model.pb";
 	cv::String imageFile = "test8.png";
-
+	cv::String classNamesFile = "synset_words_mnist.txt";
 
 	//initialize network
 	dnn::Net net = readNetFromTensorflow(modelFile);
@@ -42,26 +42,26 @@ int main()
 	Mat result = net.forward();
 	tm.stop();
 
-	if (!result.empty())
-	{
-		ofstream fout(resultFile.c_str(), ios::out | ios::binary);
-		fout.write((char*)result.data, result.total() * sizeof(float));
-	}
+// 	if (!result.empty())
+// 	{
+// 		ofstream fout(resultFile.c_str(), ios::out | ios::binary);
+// 		fout.write((char*)result.data, result.total() * sizeof(float));
+// 	}
 
-	cout<<"Output blob shape "<<result.size[0] << " x " << result.size[1] << " x " << result.size[2] << " x " << result.size[3] << endl;
-	cout << "Inference time costs: " << tm.getTimeMilli() << "ms" << endl;
+// 	cout<<"Output blob shape "<<result.size[0] << " x " << result.size[1] << " x " << result.size[2] << " x " << result.size[3] << endl;
+// 	cout << "Inference time costs: " << tm.getTimeMilli() << "ms" << endl;
 
-	if (!classNamesFile.empty())
-	{
-		vector<String> classNames = readClassNames(classNamesFile.c_str());
+// 	if (!classNamesFile.empty())
+// 	{
+// 		vector<String> classNames = readClassNames(classNamesFile.c_str());
 
-		int classId;
-		double classProb;
-		getMaxClass(result, &classId, &classProb);
+// 		int classId;
+// 		double classProb;
+// 		getMaxClass(result, &classId, &classProb);
 
-		cout << "Best class: #" << classId << " '" << classNames.at(classId) << "'" << endl;
-		cout << "Probability: " << classProb * 100 << "%" << endl;
-	}
+// 		cout << "Best class: #" << classId << " '" << classNames.at(classId) << "'" << endl;
+// 		cout << "Probability: " << classProb * 100 << "%" << endl;
+// 	}
 	
 	return 0;
 } //main
