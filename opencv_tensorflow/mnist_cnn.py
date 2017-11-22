@@ -71,16 +71,12 @@ sess.run(tf.global_variables_initializer())
 
 output_node_names = 'data,prediction'
 # train
-epoches = 1
-for epoch in range(epoches):
-    #for step in range(mnist.train.images.shape[0]):
-    for step in range(1000):
-        batch = mnist.train.next_batch(100)
-        sess.run(train_step, feed_dict={xs:batch[0], ys:batch[1]})
-        if step % 100 == 0:
-            loss, acc = sess.run((cross_entropy, accuracy), feed_dict={xs:batch[0], ys:batch[1]})
-            print('Current step: %d, loss: %s, accuracy: %s' % (step, loss, acc))
-
+for step in range(3000):
+    batch = mnist.train.next_batch(100)
+    sess.run(train_step, feed_dict={xs:batch[0], ys:batch[1]})
+    if step % 100 == 0:
+        loss, acc = sess.run((cross_entropy, accuracy), feed_dict={xs:batch[0], ys:batch[1]})
+        print('Current step: %d, loss: %s, accuracy: %s' % (step, loss, acc))
 
 print(sess.run(accuracy, feed_dict={xs:mnist.test.images, ys:mnist.test.labels}))
 
