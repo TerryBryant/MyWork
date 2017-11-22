@@ -16,6 +16,8 @@ int main()
 	cv::String modelFile = "frozen_model.pb";
 	cv::String imageFile = "test8.png";
 	cv::String classNamesFile = "synset_words_mnist.txt";
+	cv::String inBlobName = "data";
+	cv::String outBlobName = "prediction";
 
 	//initialize network
 	dnn::Net net = readNetFromTensorflow(modelFile);
@@ -32,14 +34,12 @@ int main()
 		resize(img, img, inputImgSize);       //Resize image to input size
 
 	Mat inputBlob = blobFromImage(img);
-	//Mat inputBlob = blobFromImage(img, 1, Size(24, 24), Scalar(150), true);//convert Mat to image batch
-	net.setInput(inputBlob, "");
+	net.setInput(inputBlob, inBlobName);
 
 	cv::TickMeter tm;
 	tm.start();
-
 	//make forward pass
-	Mat result = net.forward();
+	Mat result = net.forward(outBlobName);
 	tm.stop();
 
 // 	if (!result.empty())
