@@ -2,7 +2,7 @@ import os
 import tensorflow as tf
 
 ########################################################################
-# .ckp file to .pb file(without weight parameters)
+# .ckp file to .pb file
 checkpoint = tf.train.get_checkpoint_state('trained_model/')
 input_checkpoint = checkpoint.model_checkpoint_path
 
@@ -36,7 +36,7 @@ with tf.Session() as sess:
 
 
 ##########################################################################################
-# # .ckp file to .pb and .pbtxt file
+# # .ckp file to .pb and .pbtxt file(without weight parameters)
 # dir_path = 'trained_model/'
 # save_dir = 'trained_model/Protobufs'
 # sess = tf.Session()
