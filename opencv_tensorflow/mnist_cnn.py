@@ -93,9 +93,10 @@ sess.run(tf.global_variables_initializer())
 merged = tf.summary.merge_all()
 train_writer = tf.summary.FileWriter('logs_mnist_restored/', sess.graph)
 
-# save model
-saver = tf.train.Saver()
+# # save model
+# saver = tf.train.Saver()
 
+output_node_names = 'data/x_image,softmax/prediction'
 # train
 for step in range(1000):
     batch = mnist.train.next_batch(100)
@@ -106,8 +107,12 @@ for step in range(1000):
 
 print(sess.run(accuracy, feed_dict={xs:mnist.test.images, ys:mnist.test.labels, keep_prob: 1.0}))
 
+# directly gets the frozened .pb file without freeze_graph.py
+constant_graph = tf.graph_util.convert_variables_to_constants(sess, sess.graph_def, output_node_names.split(','))
+with tf.gfile.GFile('trained_model/frozen_model.pb', "wb") as f:
+    f.write(constant_graph.SerializeToString())
 
-saver.save(sess, "trained_model/mnist_cnn.ckpt")
+# saver.save(sess, "trained_model/mnist_cnn.ckpt")
 sess.close()
 
 
