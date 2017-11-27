@@ -21,7 +21,6 @@ print(np.argmax(result, 1))
 
 
 ################################################################################################
-
 # inference using tensorflow
 import tensorflow as tf
 import numpy as np
@@ -36,7 +35,7 @@ x_image = x_image.astype(np.float32)
 
 
 # read model and inference
-x_image = np.reshape(x_image, [-1, 28, 28, 1])
+inputBlob = np.reshape(x_image, [-1, 28, 28, 1])
 
 with open('trained_model/frozen_model.pb', 'rb') as f:
     out_graph_def = tf.GraphDef()
@@ -49,7 +48,7 @@ with open('trained_model/frozen_model.pb', 'rb') as f:
         prediction = sess.graph.get_tensor_by_name("softmax/prediction:0")
 
         sess.run(tf.global_variables_initializer())
-        x_image_out = sess.run(prediction, feed_dict={data: x_image})
+        x_image_out = sess.run(prediction, feed_dict={data: inputBlob})
 
         print(x_image_out)
         print(np.argmax(x_image_out, 1))
