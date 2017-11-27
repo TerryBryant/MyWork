@@ -16,8 +16,8 @@ int main()
 	cv::String modelFile = "frozen_model.pb";
 	cv::String imageFile = "test8.png";
 	cv::String classNamesFile = "synset_words_mnist.txt";
-	cv::String inBlobName = "data";
-	cv::String outBlobName = "prediction";
+	cv::String inBlobName = "input/x_input";
+	cv::String outBlobName = "softmax/prediction";
 
 	//initialize network
 	dnn::Net net = readNetFromTensorflow(modelFile);
