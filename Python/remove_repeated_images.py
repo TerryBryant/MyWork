@@ -12,9 +12,8 @@ import argparse
 
 def hash_remove_repeat(ori_image_path, dst_remove_path):
     clean_set = set()
-    file_list = os.listdir(ori_image_path)
-    for file_name in file_list:
-        image_path = os.path.join(ori_image_path, file_name)
+    for filename in os.listdir(ori_image_path):
+        image_path = os.path.join(ori_image_path, filename)
         image_ = open(image_path, "rb").read()
         hash_ = hashlib.md5(image_).hexdigest()
 
