@@ -3,7 +3,7 @@
 # 输出每个视频的帧提取图，保存在以视频文件名命名的文件夹内
 # 本文件是../OpenCV/snap_image_from_video.cpp的python版本
 # by @TerryBryant in Mar. 06th, 2018
-
+from __future__ import print_function
 import os
 import cv2
 import argparse
