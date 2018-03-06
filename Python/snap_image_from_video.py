@@ -2,6 +2,7 @@
 # 输入分别为源视频路径、保存截图的路径、截图的频率
 # 输出每个视频的帧提取图，保存在以视频文件名命名的文件夹内
 # 本文件是../OpenCV/snap_image_from_video.cpp的python版本
+# by @TerryBryant in Mar. 06th, 2018
 
 import os
 import cv2
