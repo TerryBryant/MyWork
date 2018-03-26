@@ -1,7 +1,7 @@
 import mxnet.autograd as ag
 import mxnet.ndarray as nd
 
-
+# 常见的自动求导
 x = nd.array([[1, 2], [3, 4]])
 x.attach_grad()
 
@@ -14,6 +14,7 @@ print(x.grad)
 
 ##########################################################
 
+# 关于头梯度和链式法则
 x = nd.array([[1, 2], [3, 4]])
 x.attach_grad()
 with ag.record():
