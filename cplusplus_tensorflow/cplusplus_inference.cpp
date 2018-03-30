@@ -119,5 +119,6 @@ int main()
 		cout << endl;
 	}
 
+	session->Close(); // 注意关闭会话
 	return 1;
 }
