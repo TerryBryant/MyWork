@@ -1,3 +1,6 @@
+// 使用纯tensorflow c++ api完成inference
+// Original by @TerryBryant
+// First created in Apr. 2nd, 2018
 #define COMPILER_MSVC
 #define NOMINMAX
 #define PLATFORM_WINDOWS   // 指定使用tensorflow/core/platform/windows/cpu_info.h
