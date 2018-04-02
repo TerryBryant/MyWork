@@ -11,11 +11,8 @@
 #include <opencv2/opencv.hpp>   // 使用opencv读取图片
 #include "tensorflow/core/public/session.h"
 #include "tensorflow/core/platform/env.h"
-#include "tensorflow/cc/ops/standard_ops.h"  // 为了使用ops
-
 
 using namespace tensorflow;
-using namespace tensorflow::ops;  // ops用在使用tensorflow读取图片的部分
 using std::cout;
 using std::endl;
 
