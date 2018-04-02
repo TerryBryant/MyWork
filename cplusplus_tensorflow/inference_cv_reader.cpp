@@ -1,3 +1,8 @@
+// 这段代码读取图片使用了opencv三方库，在另外的inference_tf_reader.cpp中则是使用的纯tensorflow c++ api
+// 修改的内容主要是整理了部分代码，因为第一版有些混乱
+// Original by @TerryBryant
+// First created in Mar. 28th, 2018
+// modified in Apr. 2nd, 2018
 #define COMPILER_MSVC
 #define NOMINMAX
 #define PLATFORM_WINDOWS   // 指定使用tensorflow/core/platform/windows/cpu_info.h
@@ -28,61 +33,33 @@ int main()
 
 
 	// 设置输入图像数据
+	//利用opencv读取图片
+	cv::Mat img = cv::imread(image_path);
+	cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
+	int channels = img.channels();  // 本模型的输入图片是单通道的
 
-	/// 方法一，利用tensorflow自带api读取图片
-	auto root = tensorflow::Scope::NewRootScope();
-	auto file_reader = ops::ReadFile(root.WithOpName(input_name), image_path);
+	// 图像预处理
+	img.convertTo(img, CV_32F);
+	cv::resize(img, img, cv::Size(input_width, input_height), cv::INTER_LINEAR);
+	img = (img - input_mean) / input_std;	
 
-	const int channels = 3;
-	tensorflow::Output image_reader;
-	if (tensorflow::StringPiece(image_path).ends_with(".png")) {
-		image_reader = ops::DecodePng(root.WithOpName("png_reader"), file_reader,
-			ops::DecodePng::Channels(channels));
+	// 取图像数据，赋给tensorflow支持的Tensor变量中
+	const float* source_data = (float*)img.data;
+	tensorflow::Tensor input_tensor(DT_FLOAT, TensorShape({ 1, input_height, input_width, channels })); //这里只输入一张图片，参考tensorflow的数据格式NCHW
+	auto input_tensor_mapped = input_tensor.tensor<float, 4>(); // input_tensor_mapped相当于input_tensor的数据接口，“4”表示数据是4维的
+																// 后面取出最终结果时也能看到这种用法
+
+	// 把数据复制到input_tensor_mapped中，实际上就是遍历opencv的Mat数据
+	for (int i = 0; i < input_height; i++) {
+		const float* source_row = source_data + (i * input_width * channels);
+		for (int j = 0; j < input_width; j++) {
+			const float* source_pixel = source_row + (j * channels);
+			for (int c = 0; c < channels; c++) {
+				const float* source_value = source_pixel + c;
+				input_tensor_mapped(0, i, j, c) = *source_value;
+			}
+		}
 	}
-	else if (tensorflow::StringPiece(image_path).ends_with(".gif")) {
-		image_reader = ops::DecodeGif(root.WithOpName("gif_reader"), file_reader);
-	}
-	else {
-		// Assume if it's neither a PNG nor a GIF then it must be a JPEG.
-		image_reader = ops::DecodeJpeg(root.WithOpName("jpeg_reader"), file_reader,
-			ops::DecodeJpeg::Channels(channels));
-	}
-
-	// 将图片数据转为float格式
-	auto float_caster = ops::Cast(root.WithOpName("float_caster"), image_reader, tensorflow::DT_FLOAT);
-	auto dims_expander = ops::ExpandDims(root, float_caster, 0);
-	auto resized = ops::ResizeBilinear(root, dims_expander, ops::Const(root.WithOpName("size"), { input_height , input_width }));    // resize图像，采用线性插值的方法
-	ops::Div(root.WithOpName(output_name), ops::Sub(root, resized, { input_mean }), { input_std });
-
-
-	///// 方法二，利用opencv读取图片
-	//cv::Mat img = cv::imread(image_path);
-	//cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
-	//int height = img.rows;
-	//int width = img.cols;
-	//int depth = img.channels();
-
-	//// 图像预处理
-	//img.convertTo(img, CV_32F);
-	//img = (img - input_mean) / input_std;	
-
-	//// 取图像数据，赋给tensorflow支持的Tensor变量中
-	//const float* source_data = (float*)img.data;
-	//tensorflow::Tensor input_tensor(DT_FLOAT, TensorShape({ 1, height, width, depth })); //这里只输入一张图片，参考tensorflow的数据格式NCHW
-	//auto input_tensor_mapped = input_tensor.tensor<float, 4>(); // input_tensor_mapped相当于input_tensor的数据接口，“4”表示数据是4维的
-	//															// 后面取出最终结果时也能看到这种用法
-
-	//// 把数据复制到input_tensor_mapped中，实际上就是遍历opencv的Mat数据
-	//for (int i = 0; i < height; i++) {
-	//	const float* source_row = source_data + (i * width * depth);
-	//	for (int j = 0; j < width; j++) {
-	//		const float* source_pixel = source_row + (j * depth);
-	//		for (int c = 0; c < depth; c++) {
-	//			const float* source_value = source_pixel + c;
-	//			input_tensor_mapped(0, i, j, c) = *source_value;
-	//		}
-	//	}
-	//}
 
 
 
@@ -168,5 +145,6 @@ int main()
 		cout << endl;
 	}
 
+	session->Close();
 	return 1;
 }
