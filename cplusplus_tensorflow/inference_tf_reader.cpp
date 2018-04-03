@@ -124,8 +124,8 @@ int main()
 	TF_CHECK_OK(ReadBinaryProto(Env::Default(), model_path, &graph_def));
 
 	// 初始化tensorflow session
-	Session* session;	
-	TF_CHECK_OK(tensorflow::NewSession(SessionOptions(), &session));
+	std::unique_ptr<tensorflow::Session> session(
+		tensorflow::NewSession(tensorflow::SessionOptions()));
 
 	// 将graph加载到session
 	TF_CHECK_OK(session->Create(graph_def));
@@ -173,6 +173,5 @@ int main()
 		cout << endl;
 	}
 
-	session->Close();
 	return 1;
 }
