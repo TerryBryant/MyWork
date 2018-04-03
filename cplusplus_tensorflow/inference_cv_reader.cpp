@@ -75,8 +75,10 @@ int main()
 
 
 	// 初始化tensorflow session
-	Session* session;	
-	TF_CHECK_OK(tensorflow::NewSession(SessionOptions(), &session));
+    std::unique_ptr<tensorflow::Session> session(
+		tensorflow::NewSession(tensorflow::SessionOptions()));
+	//Session* session;	
+	//TF_CHECK_OK(tensorflow::NewSession(SessionOptions(), &session));
 	//tensorflow::SessionOptions sess_opt;
 	//sess_opt.config.mutable_gpu_options()->set_per_process_gpu_memory_fraction(0.5); // 设置占用显存比例，默认全部占用
 	//sess_opt.config.mutable_gpu_options()->set_allow_growth(true);
@@ -142,6 +144,5 @@ int main()
 		cout << endl;
 	}
 
-	session->Close();
 	return 1;
 }
