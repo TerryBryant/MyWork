@@ -7,4 +7,4 @@
 protoc object_detection/protos/*.proto --python_out=.
 ```
 即在object_detection/protos下生成了必须要的文件，注意protoc需要3.0以上的版本，否则会报错  
-3、准备好图片文件，执行```ssd_mobilenet_inference.py```，即可得到检测结果
+3、准备好图片文件，执行```ssd_mobilenet_inference.py```，即可得到检测结果（该脚本参考的是[这里](https://github.com/tensorflow/models/blob/master/research/object_detection/object_detection_tutorial.ipynb)）
