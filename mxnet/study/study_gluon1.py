@@ -24,4 +24,8 @@ print(net2)
 net2.initialize()
 x = nd.random_uniform(shape=(4, 20))
 y = net2(x)
+<<<<<<< HEAD
 print(y)
+=======
+print(y)
+>>>>>>> origin/master
