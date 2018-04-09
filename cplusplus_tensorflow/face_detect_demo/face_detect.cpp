@@ -79,9 +79,8 @@ int FaceDetection(const std::string& xml_path,
 		tensorflow::NewSession(tensorflow::SessionOptions()));
 
 	TF_CHECK_OK(session->Create(graph_def));
-	// 将图片输入模型，首先调用ReadTensorFromImageFile，将图片读入Tensor
+	// 将图片读入Tensor
 	cv::Mat img = cv::imread(image_path);
-	cv::Mat img2 = img.clone();
 	cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
 	int input_height = img.rows;
 	int input_width = img.cols;
@@ -92,7 +91,7 @@ int FaceDetection(const std::string& xml_path,
 	tensorflow::Tensor input_tensor(tensorflow::DT_UINT8, TensorShape({ 1, input_height, input_width, channels })); //这里只输入一张图片，参考tensorflow的数据格式NCHW
 	auto input_tensor_mapped = input_tensor.tensor<uint8, 4>(); // input_tensor_mapped相当于input_tensor的数据接口，“4”表示数据是4维的
 
-																// 把数据复制到input_tensor_mapped中，实际上就是遍历opencv的Mat数据
+	// 把数据复制到input_tensor_mapped中，实际上就是遍历opencv的Mat数据
 	for (int i = 0; i < input_height; i++) {
 		uint8* source_row = source_data + (i * input_width * channels);
 		for (int j = 0; j < input_width; j++) {
@@ -112,7 +111,7 @@ int FaceDetection(const std::string& xml_path,
 	// 输出outputs
 	std::vector<tensorflow::Tensor> outputs;
 
-	// 运行会话，计算输出output_names，即模型中定义的输出数据名称，最终结果保存在outputs中
+	// 运行会话，计算输出model_output_names，即模型中定义的输出数据名称，最终结果保存在outputs中
 	TF_CHECK_OK(session->Run(inputs, { model_output_names }, {}, &outputs));
 
 
@@ -121,10 +120,10 @@ int FaceDetection(const std::string& xml_path,
 	auto out_scores = outputs[1].tensor<float, 2>();
 	auto out_classes = outputs[2].tensor<float, 2>();
 
-	// 只取得分最高的那一组结果
+	// 只取得分最高的那一组结果（可以根据需要改成多组结果）
 	if (std::abs(out_classes(0, 0) - 1) < 1e-4) {
 		if (out_scores(0, 0) > 0.6) {
-			// 扩大人脸区域1.5倍，得到扩大后的结果，输入下一步的模型中
+			// 扩大人脸区域1.5倍，得到扩大后的结果
 			cv::Rect face_region(cv::Point(int(out_boxes(0, 0, 1)*input_width), int(out_boxes(0, 0, 0)*input_height)),
 				cv::Point(int(out_boxes(0, 0, 3)*input_width), int(out_boxes(0, 0, 2)*input_height)));
 
