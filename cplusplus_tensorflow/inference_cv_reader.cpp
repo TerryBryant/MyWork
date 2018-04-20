@@ -42,7 +42,7 @@ int main()
 
 	// 取图像数据，赋给tensorflow支持的Tensor变量中
 	const float* source_data = (float*)img.data;
-	tensorflow::Tensor input_tensor(DT_FLOAT, TensorShape({ 1, input_height, input_width, channels })); //这里只输入一张图片，参考tensorflow的数据格式NCHW
+	tensorflow::Tensor input_tensor(DT_FLOAT, TensorShape({ 1, input_height, input_width, channels })); //这里只输入一张图片，参考tensorflow的数据格式NHWC
 	auto input_tensor_mapped = input_tensor.tensor<float, 4>(); // input_tensor_mapped相当于input_tensor的数据接口，“4”表示数据是4维的
 																// 后面取出最终结果时也能看到这种用法
 
