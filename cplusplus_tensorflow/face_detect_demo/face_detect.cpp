@@ -87,7 +87,7 @@ int FaceDetection(const std::string& xml_path,
 
 	// 取图像数据，赋给tensorflow支持的Tensor变量中
 	uint8* source_data = (uint8*)img.data;
-	tensorflow::Tensor input_tensor(tensorflow::DT_UINT8, TensorShape({ 1, input_height, input_width, channels })); //这里只输入一张图片，参考tensorflow的数据格式NCHW
+	tensorflow::Tensor input_tensor(tensorflow::DT_UINT8, TensorShape({ 1, input_height, input_width, channels })); //这里只输入一张图片，参考tensorflow的数据格式NHWC
 	auto input_tensor_mapped = input_tensor.tensor<uint8, 4>(); // input_tensor_mapped相当于input_tensor的数据接口，“4”表示数据是4维的
 
 	// 把数据复制到input_tensor_mapped中，实际上就是遍历opencv的Mat数据
