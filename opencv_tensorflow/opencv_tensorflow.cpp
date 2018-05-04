@@ -1,97 +1,46 @@
 #include <opencv2\dnn.hpp>
-#include <opencv2\imgproc.hpp>
-#include <opencv2\highgui.hpp>
+#include <opencv2\opencv.hpp>
 #include <iostream>
-#include <fstream>
 
-using namespace std;
-using namespace cv;
-using namespace cv::dnn;
+using std::cout;
+using std::endl;
 
-void getMaxClass(const Mat &probBlob, int *classId, double *classProb);
-vector<cv::String> readClassNames(const char *filename);
 
 int main()
 {
-	cv::String modelFile = "frozen_model.pb";
+	cv::String modelFile = "...\\trained_model\\frozen_model.pb";
 	cv::String imageFile = "test8.png";
-	cv::String classNamesFile = "synset_words_mnist.txt";
-	cv::String inBlobName = "input/x_input";
-	cv::String outBlobName = "softmax/prediction";
 
 	//initialize network
-	dnn::Net net = readNetFromTensorflow(modelFile);
+	cv::dnn::Net net = cv::dnn::readNetFromTensorflow(modelFile);
 	if (net.empty())
 		return -1;
 
 	//prepare blob
-	Mat img = imread(imageFile, IMREAD_GRAYSCALE);
+	cv::Mat img = imread(imageFile, cv::IMREAD_GRAYSCALE);  //这里按灰度图读入是跟模型有关
 	if (img.empty())
 		return -2;
 
-	Size inputImgSize = cv::Size(28, 28);
-	if (inputImgSize != img.size())
-		resize(img, img, inputImgSize);       //Resize image to input size
+	cv::resize(img, img, cv::Size(28, 28));
+	img = 255 - img;
+	img.convertTo(img, CV_32F);
+	img = img / 255.0f;
 
-	Mat inputBlob = blobFromImage(img);
-	net.setInput(inputBlob, inBlobName);
+	cv::Mat inputBlob = cv::dnn::blobFromImage(img);
+	net.setInput(inputBlob);
 
-	cv::TickMeter tm;
+	
+	cv::TickMeter tm;  //统计inference用时
 	tm.start();
+
 	//make forward pass
-	Mat result = net.forward(outBlobName);
+	cv::Mat result = net.forward();
 	tm.stop();
 
-// 	if (!result.empty())
-// 	{
-// 		ofstream fout(resultFile.c_str(), ios::out | ios::binary);
-// 		fout.write((char*)result.data, result.total() * sizeof(float));
-// 	}
-
-// 	cout<<"Output blob shape "<<result.size[0] << " x " << result.size[1] << " x " << result.size[2] << " x " << result.size[3] << endl;
-// 	cout << "Inference time costs: " << tm.getTimeMilli() << "ms" << endl;
-
-// 	if (!classNamesFile.empty())
-// 	{
-// 		vector<String> classNames = readClassNames(classNamesFile.c_str());
-
-// 		int classId;
-// 		double classProb;
-// 		getMaxClass(result, &classId, &classProb);
-
-// 		cout << "Best class: #" << classId << " '" << classNames.at(classId) << "'" << endl;
-// 		cout << "Probability: " << classProb * 100 << "%" << endl;
-// 	}
+	cout << result << endl;
+	cout << "Time elapsed: " << tm.getTimeSec() << "s" << endl;
 	
-	return 0;
+	return 1;
 } //main
 
-//find best class for the blob
-void getMaxClass(const Mat &probBlob, int *classId, double *classProb)
-{
-	Mat probMat = probBlob.reshape(1, 1);
-	Point classNumber;
 
-	minMaxLoc(probMat, NULL, classProb, NULL, &classNumber);
-	*classId = classNumber.x;
-}
-
-vector<cv::String> readClassNames(const char *filename)
-{
-	vector<cv::String> classNames;
-
-	ifstream fp(filename);
-	if (!fp.is_open())
-		exit(-1);
-
-	std::string name;
-	while (!fp.eof())
-	{
-		std::getline(fp, name);
-		if (name.length())
-			classNames.push_back(name);
-	}
-
-	fp.close();
-	return classNames;
-}
