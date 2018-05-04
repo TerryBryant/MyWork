@@ -3,7 +3,7 @@ import tensorflow.examples.tutorials.mnist.input_data as input_data
 
 
 # data
-mnist = input_data.read_data_sets("mnist_data/", one_hot=True)
+mnist = input_data.read_data_sets("E:/ProjectPython/DeepLearning/MNIST_data/", one_hot=True)
 
 
 def weight_variable(shape, name):
@@ -81,7 +81,7 @@ merged = tf.summary.merge_all()
 train_writer = tf.summary.FileWriter('logs_mnist_restored/', sess.graph)
 
 # # save model
-# saver = tf.train.Saver()
+saver = tf.train.Saver()
 
 output_node_names = 'input/x_input,softmax/prediction'
 # train
@@ -97,15 +97,13 @@ for step in range(1000):
         loss, acc = sess.run((cross_entropy, accuracy), feed_dict={xs:batch_xs, ys:batch_ys})
         print('Current step: %d, loss: %s, accuracy: %s' % (step, loss, acc))
 
+# 第一种方式，保存为ckpt文件
+# saver.save(sess, "trained_model/mnist_cnn.ckpt", global_step=step)
 
-#print(sess.run(accuracy, feed_dict={xs:mnist.test.images, ys:mnist.test.labels}))
-
-# Finally we serialize and dump the output graph to the filesystem
+# 第二种方式，保存为pb文件
 constant_graph = tf.graph_util.convert_variables_to_constants(sess, sess.graph_def, output_node_names.split(','))
 with tf.gfile.GFile('trained_model/frozen_model.pb', "wb") as f:
     f.write(constant_graph.SerializeToString())
 
 
 sess.close()
-
-
