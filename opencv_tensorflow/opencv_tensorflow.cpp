@@ -1,3 +1,4 @@
+// 利用opencv c++ api来进行inference，结果与python_tensorflow.py里面的也一致，但同样存在细微的差别，应该也是计算误差所致
 #include <opencv2\dnn.hpp>
 #include <opencv2\opencv.hpp>
 #include <iostream>
