@@ -1,6 +1,10 @@
+# 两种inference方法的对比，结果基本一致，差异应该来源于计算误差
+
+################################################################################################
 # inference using opencv
 import numpy as np
 import cv2
+
 
 # read and convert the image to the format that similar to mnist image
 x_image = cv2.imread('test8.png', cv2.IMREAD_GRAYSCALE)
@@ -41,7 +45,6 @@ with open('trained_model/frozen_model.pb', 'rb') as f:
     out_graph_def = tf.GraphDef()
     out_graph_def.ParseFromString(f.read())
     tf.import_graph_def(out_graph_def, name="")
-
 
     with tf.Session() as sess:
         data = sess.graph.get_tensor_by_name("input/x_input:0")
