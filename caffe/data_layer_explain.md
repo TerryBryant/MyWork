@@ -42,11 +42,11 @@ layer {
   }
   image_data_param {
     source: "examples/_temp/train_list.txt"    // 存放训练集图片路径的txt
-	root_folder: "examples/image/"             // 训练集图片路径
+    root_folder: "examples/image/"             // 训练集图片路径
     batch_size: 50
     new_height: 256                            // 用于指定resize之后的尺寸，最好与crop_size一致
     new_width: 256
-	shuffle: false                             // 默认值是false，表示每次epoch的是否不打乱数据集
+    shuffle: false                             // 默认值是false，表示每次epoch的是否不打乱数据集
   }
   transform_param {
     mirror: false
