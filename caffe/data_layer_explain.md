@@ -23,7 +23,7 @@ layer {
 说明下这里面的transform_param，主要涉及到数据预处理，示例如下
 ```
 transform_param {
-    scale: 0.00390625    	                          // 像素值*scale*(1/256)
+    scale: 0.00390625                                 // 像素值*scale*(1/256)
     mean_file: "examples/cifar10/mean.binaryproto"    // 用一个配置文件来进行均值操作，也可以用mean_value 
     mirror: ture                                      // ture表示开启镜像
     crop_size: 227                                    // 剪裁一个 227*227的图块，在训练阶段随机剪裁，在测试阶段从中间裁剪
