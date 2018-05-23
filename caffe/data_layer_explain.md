@@ -23,15 +23,9 @@ layer {
 说明下这里面的transform_param，主要涉及到数据预处理，示例如下
 ```
 transform_param {
-    scale: 0.00390625
-    mean_file_size: "examples/cifar10/mean.binaryproto"
-	[comment]: <> (This is a comment, it will not be included)
-	[comment]: <> (in  the output file unless you use it in)
-	[comment]: <> (a reference style link.)
-	[//]: # (This may be the most platform independent comment)
-    # 用一个配置文件来进行均值操作
-    mirror: 1  # 1表示开启镜像，0表示关闭，也可用ture和false来表示
-    # 剪裁一个 227*227的图块，在训练阶段随机剪裁，在测试阶段从中间裁剪
-    crop_size: 227
+    scale: 0.00390625    *像素值 x scale x (1/256)*	
+    mean_file_size: "examples/cifar10/mean.binaryproto"    *用一个配置文件来进行均值操作*  
+    mirror: ture    *ture表示开启镜像*  
+    crop_size: 227    *剪裁一个 227*227的图块，在训练阶段随机剪裁，在测试阶段从中间裁剪*
   }
 ```
