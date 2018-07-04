@@ -47,3 +47,32 @@ for param in params:
 # define model
 def linreg(X, w, b):
     return nd.dot(X, w) + b
+
+# define loss function
+def squared_loss(y_hat, y):
+    return (y_hat - y.reshape(y_hat.shape)) ** 2 / 2
+
+# define optimize algorithm
+def sgd(params, lr, batch_size):
+    for param in params:
+        param[:] = param - lr * param.grad / batch_size
+
+# train the model
+lr = 0.03
+num_epochs = 3
+net = linreg
+loss = squared_loss
+
+for epoch in range(1, num_epochs + 1):
+    # suppose the size of samples can be divided by batch size
+    for X, y in data_iter(batch_size, features, labels):
+        with autograd.record():
+            l = loss(net(X, w, b), y)
+        l.backward()
+
+        sgd([w, b], lr, batch_size)
+
+    print('Epoch %d, loss %f' % (epoch, loss(net(features, w, b), labels).mean().asnumpy()))
+
+print(w)
+print(b)
