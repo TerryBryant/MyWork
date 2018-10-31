@@ -5,4 +5,4 @@
 
 2、改写```examples/ssd/ssd_pascal_resnet.py```。为了方便，这里我也是新建了一个```ssd_resnet18.py```文件，文件内容跟```ssd_pascal_resnet.py```一致，再改写下```mbox_source_layers = ['res3b1_relu', 'res5b_relu', 'res5b_relu/conv1_2', 'res5b_relu/conv2_2', 'res5b_relu/conv3_2', 'pool6']```，以及改变两处```ResNet101Body```为```ResNet18Body```，再将第1步中的```model_libs_resnet.py```移动到这个目录下即可
 
-3、配置好```ssd_resnet18.py```的相关路径，运行即可得到网络文件，这里统一上传
+3、配置好```ssd_resnet18.py```的相关路径，运行即可得到网络文件，这里统一上传到```resnet18_ssd```目录下
