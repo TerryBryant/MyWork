@@ -13,3 +13,5 @@
 建议也参考这种改法。
 
 2、加入mobilenet v1基础网络。
+
+3、注意在修改```mbox_source_layers```的时候，最后一个pool层的名字和basenet的最后一个pool层名字不同，不然会混淆
