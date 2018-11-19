@@ -6,3 +6,10 @@
 2、改写```examples/ssd/ssd_pascal_resnet.py```。为了方便，这里我也是新建了一个```ssd_resnet18.py```文件，文件内容跟```ssd_pascal_resnet.py```一致，再改写下```mbox_source_layers = ['res3b1_relu', 'res5b_relu', 'res5b_relu/conv1_2', 'res5b_relu/conv2_2', 'res5b_relu/conv3_2', 'pool6']```，以及改变两处```ResNet101Body```为```ResNet18Body```，再将第1步中的```model_libs_resnet.py```移动到这个目录下即可
 
 3、配置好```ssd_resnet18.py```的相关路径，运行即可得到网络文件，这里统一上传到```resnet18_ssd```目录下
+
+### 2018-11-19 update
+1、注意在resnet作为基础网络的时候，从res4b1到res5a之后，按道理feature map只有10x10的尺寸了。在原始ssd中是这么处理的，
+将这里卷积的stride从2变为1，然后把从这之后的卷积都改为dilation convolution，相当于也在保持感受野尺寸。所以在修改其它网络结构的时候，
+建议也参考这种改法。
+
+2、加入mobilenet v1基础网络。
