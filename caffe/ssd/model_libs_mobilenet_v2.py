@@ -144,28 +144,27 @@ def invert_residual_block(net, from_layer, out_layer, out_expand, out_dwise, out
     # depthwise, caffe dosen't support depthwise convolution, which is a special kind of group convolution
     # Here I recommend a third-party implement: https://github.com/yonghenglh6/DepthwiseConvolution
     expand_name = conv_prefix + 'dwise'
-    if dilation == 1:
-        ConvBNLayer(net, out_name, '', use_bn=True, use_relu=True,
-                    num_output=out_dwise, kernel_size=3, pad=1, stride=stride, use_scale=use_scale,
-                    use_group=True, conv_prefix=expand_name, conv_postfix=conv_postfix,
-                    bn_prefix=expand_name + '/bn', bn_postfix=bn_postfix,
-                    scale_prefix=expand_name + '/scale', scale_postfix=scale_postfix, **bn_param)
-    else:
-        pad = int((3 + (dilation - 1) * 2) - 1) / 2
-        ConvBNLayer(net, out_name, '', use_bn=True, use_relu=True,
-                    num_output=out_dwise, kernel_size=3, pad=pad, stride=stride, use_scale=use_scale,
-                    use_group=True, dilation=dilation, conv_prefix=expand_name, conv_postfix=conv_postfix,
-                    bn_prefix=expand_name + '/bn', bn_postfix=bn_postfix,
-                    scale_prefix=expand_name + '/scale', scale_postfix=scale_postfix, **bn_param)
+    ConvBNLayer(net, out_name, '', use_bn=True, use_relu=True,
+                num_output=out_dwise, kernel_size=3, pad=1, stride=stride, use_scale=use_scale,
+                use_group=True, conv_prefix=expand_name, conv_postfix=conv_postfix,
+                bn_prefix=expand_name + '/bn', bn_postfix=bn_postfix,
+                scale_prefix=expand_name + '/scale', scale_postfix=scale_postfix, **bn_param)
     out_name = '{}{}'.format(expand_name, '_relu')
 
     # linear
     expand_name = conv_prefix + 'linear'
-    ConvBNLayer(net, out_name, '', use_bn=True, use_relu=False,
-                num_output=out_linear, kernel_size=1, pad=0, stride=1, use_scale=use_scale,
-                conv_prefix=expand_name, conv_postfix=conv_postfix,
-                bn_prefix=expand_name + '/bn', bn_postfix=bn_postfix,
-                scale_prefix=expand_name + '/scale', scale_postfix=scale_postfix, **bn_param)
+    if dilation == 1:
+        ConvBNLayer(net, out_name, '', use_bn=True, use_relu=False,
+                    num_output=out_linear, kernel_size=1, pad=0, stride=1, use_scale=use_scale,
+                    conv_prefix=expand_name, conv_postfix=conv_postfix,
+                    bn_prefix=expand_name + '/bn', bn_postfix=bn_postfix,
+                    scale_prefix=expand_name + '/scale', scale_postfix=scale_postfix, **bn_param)
+    else:
+        ConvBNLayer(net, out_name, '', use_bn=True, use_relu=False,
+                    num_output=out_linear, kernel_size=1, pad=0, stride=1, use_scale=use_scale,
+                    dilation=dilation, conv_prefix=expand_name, conv_postfix=conv_postfix,
+                    bn_prefix=expand_name + '/bn', bn_postfix=bn_postfix,
+                    scale_prefix=expand_name + '/scale', scale_postfix=scale_postfix, **bn_param)
     out_name = '{}{}'.format(expand_name, '/scale')
 
     if has_shortcut:
@@ -186,34 +185,38 @@ def MobilenetV2Body(net, from_layer, use_pool6=True, use_dilation_conv5=False, *
                 bn_prefix=bn_prefix, bn_postfix=bn_postfix,
                 scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
 
-    invert_residual_block(net, net.keys()[-1], 'conv2_1', 32, 32, 16, 1, False, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv2_2', 96, 96, 24, 2, False, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv2_1', 32, 32, 16, stride=1, has_shortcut=False, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv2_2', 96, 96, 24, stride=2, has_shortcut=False, **bn_param)
 
-    invert_residual_block(net, net.keys()[-1], 'conv3_1', 144, 144, 24, 1, True, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv3_2', 144, 144, 32, 2, False, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv3_1', 144, 144, 24, stride=1, has_shortcut=True, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv3_2', 144, 144, 32, stride=2, has_shortcut=False, **bn_param)
 
-    invert_residual_block(net, net.keys()[-1], 'conv4_1', 192, 192, 32, 1, True, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv4_2', 192, 192, 32, 1, True, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv4_3', 192, 192, 64, 1, False, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv4_4', 384, 384, 64, 1, True, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv4_5', 384, 384, 64, 1, True, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv4_6', 384, 384, 64, 1, True, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv4_7', 384, 384, 96, 2, False, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv4_1', 192, 192, 32, stride=1, has_shortcut=True, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv4_2', 192, 192, 32, stride=1, has_shortcut=True, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv4_3', 192, 192, 64, stride=1, has_shortcut=False, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv4_4', 384, 384, 64, stride=1, has_shortcut=True, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv4_5', 384, 384, 64, stride=1, has_shortcut=True, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv4_6', 384, 384, 64, stride=1, has_shortcut=True, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv4_7', 384, 384, 96, stride=2, has_shortcut=False, **bn_param)
 
-    invert_residual_block(net, net.keys()[-1], 'conv5_1', 576, 576, 96, 1, True, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv5_2', 576, 576, 96, 1, True, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv5_1', 576, 576, 96, stride=1, has_shortcut=True, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv5_2', 576, 576, 96, stride=1, has_shortcut=True, **bn_param)
 
+    stride = 2
+    dilation = 1
     if use_dilation_conv5:
+        stride = 1
         dilation = 2
-    invert_residual_block(net, net.keys()[-1], 'conv5_3', 576, 576, 160, 2, False, dilation=dilation, **bn_param)
 
-    invert_residual_block(net, net.keys()[-1], 'conv6_1', 960, 960, 160, 1, True, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv6_2', 960, 960, 160, 1, True, **bn_param)
-    invert_residual_block(net, net.keys()[-1], 'conv6_3', 960, 960, 320, 1, False, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv5_3', 576, 576, 160, stride=stride, has_shortcut=False, dilation=dilation, **bn_param)
+
+    invert_residual_block(net, net.keys()[-1], 'conv6_1', 960, 960, 160, stride=1, has_shortcut=True, dilation=dilation, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv6_2', 960, 960, 160, stride=1, has_shortcut=True, dilation=dilation, **bn_param)
+    invert_residual_block(net, net.keys()[-1], 'conv6_3', 960, 960, 320, stride=1, has_shortcut=False, dilation=dilation, **bn_param)
 
     ConvBNLayer(net, net.keys()[-1], '', use_bn=True, use_relu=True,
                 num_output=1280, kernel_size=1, pad=0, stride=1,
-                conv_prefix='conv6_4', conv_postfix='',
+                dilation=dilation, conv_prefix='conv6_4', conv_postfix='',
                 bn_prefix='conv6_4' + '/bn', bn_postfix='',
                 scale_prefix='conv6_4' + '/scale', scale_postfix='', **bn_param)
 
