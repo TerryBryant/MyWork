@@ -29,7 +29,7 @@ layer {
   }
   data_param {
     source: "/mnt/data/ys/lmdb/trainlist_lmdb"
-    batch_size: 32
+    batch_size: 16
     backend: LMDB
   }
   annotated_data_param {
@@ -115,7 +115,7 @@ layer {
       max_sample: 1
       max_trials: 50
     }
-    label_map_file: "labelmap.prototxt"
+    label_map_file: "data/VOC0712/labelmap_voc.prototxt"
   }
 }
 layer {
@@ -3073,14 +3073,13 @@ layer {
   convolution_param {
     num_output: 576
     bias_term: false
-    pad: 2
+    pad: 1
     kernel_size: 3
     group: 576
-    stride: 2
+    stride: 1
     weight_filler {
       type: "msra"
     }
-    dilation: 2
   }
 }
 layer {
@@ -3153,6 +3152,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
@@ -3364,6 +3364,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
@@ -3582,6 +3583,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
@@ -3800,6 +3802,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
@@ -3866,6 +3869,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
