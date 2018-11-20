@@ -2961,14 +2961,13 @@ layer {
   convolution_param {
     num_output: 576
     bias_term: false
-    pad: 2
+    pad: 1
     kernel_size: 3
     group: 576
-    stride: 2
+    stride: 1
     weight_filler {
       type: "msra"
     }
-    dilation: 2
   }
 }
 layer {
@@ -3041,6 +3040,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
@@ -3252,6 +3252,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
@@ -3470,6 +3471,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
@@ -3688,6 +3690,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
@@ -3754,6 +3757,7 @@ layer {
     weight_filler {
       type: "msra"
     }
+    dilation: 2
   }
 }
 layer {
@@ -5048,6 +5052,12 @@ layer {
       top_k: 400
     }
     save_output_param {
+      output_directory: "/home/terry/data/VOCdevkit/results/VOC2007/SSD_300x300/Main"
+      output_name_prefix: "comp4_det_test_"
+      output_format: "VOC"
+      label_map_file: "data/VOC0712/labelmap_voc.prototxt"
+      name_size_file: "data/VOC0712/test_name_size.txt"
+      num_test_image: 2000
     }
     code_type: CENTER_SIZE
     keep_top_k: 200
