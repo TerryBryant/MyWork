@@ -205,7 +205,7 @@ net = caffe.NetSpec()
 net.data = L.Data(batch_size=1, backend=P.Data.LMDB, source='train_lmdb',
                              transform_param=dict(scale=1./255, crop_size=224)
                              )
-MobilenetV1Body(net, from_layer='data', use_pool6=True, use_dilation_conv5=True)
+MobilenetV1Body(net, from_layer='data', use_pool6=True, use_dilation_conv5=False)
 
 kwargs={
     'param': [
