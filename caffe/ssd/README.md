@@ -15,3 +15,6 @@
 2、加入mobilenet v1基础网络。
 
 3、注意在修改```mbox_source_layers```的时候，最后一个pool层的名字和basenet的最后一个pool层名字不同，不然会混淆
+
+### 2018-11-23 update
+加入densenet121基础网络，注意在使用dilation后，可能造成concat层的两个输入不匹配，此时应调整相应的padding
