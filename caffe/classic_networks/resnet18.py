@@ -142,8 +142,9 @@ def ResShallowBody(net, from_layer, block_name, out2a, out2b, stride, use_branch
                 scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
     out_name = '{}{}'.format(conv_prefix, branch_name)
 
+    # update here 'use_relu=False'
     branch_name = 'branch2b'
-    ConvBNLayer(net, out_name, branch_name, use_bn=True, use_relu=True,
+    ConvBNLayer(net, out_name, branch_name, use_bn=True, use_relu=False,
                 num_output=out2b, kernel_size=3, pad=1, stride=1, use_scale=use_scale,
                 conv_prefix=conv_prefix, conv_postfix=conv_postfix,
                 bn_prefix=bn_prefix, bn_postfix=bn_postfix,
@@ -216,7 +217,6 @@ net.fc6 = L.InnerProduct(net[net.keys()[-1]], num_output=1000, **kwargs)
 net.prob = L.Softmax(net[net.keys()[-1]])
 
 
-
-with open('train__resnet18.prototxt', 'w') as f:
+with open('train_resnet18.prototxt', 'w') as f:
     print('name: "{}_train"'.format('resnet18'), file=f)
     print(net.to_proto(), file=f)
