@@ -1,4 +1,4 @@
-name: "ResNet_VOC0712_SSD_300x300_train"
+name: "ResNet18_VOC0712_SSD_300x300_train"
 layer {
   name: "data"
   type: "AnnotatedData"
@@ -134,8 +134,7 @@ layer {
     kernel_size: 7
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -219,8 +218,7 @@ layer {
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -287,8 +285,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -361,8 +358,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -414,12 +410,6 @@ layer {
   }
 }
 layer {
-  name: "res2a_branch2b_relu"
-  type: "ReLU"
-  bottom: "res2a_branch2b"
-  top: "res2a_branch2b"
-}
-layer {
   name: "res2a"
   type: "Eltwise"
   bottom: "res2a_branch1"
@@ -448,8 +438,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -522,8 +511,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -575,12 +563,6 @@ layer {
   }
 }
 layer {
-  name: "res2b_branch2b_relu"
-  type: "ReLU"
-  bottom: "res2b_branch2b"
-  top: "res2b_branch2b"
-}
-layer {
   name: "res2b"
   type: "Eltwise"
   bottom: "res2a"
@@ -609,8 +591,7 @@ layer {
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -677,8 +658,7 @@ layer {
     kernel_size: 3
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -751,8 +731,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -804,12 +783,6 @@ layer {
   }
 }
 layer {
-  name: "res3a_branch2b_relu"
-  type: "ReLU"
-  bottom: "res3a_branch2b"
-  top: "res3a_branch2b"
-}
-layer {
   name: "res3a"
   type: "Eltwise"
   bottom: "res3a_branch1"
@@ -838,8 +811,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -912,8 +884,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -965,12 +936,6 @@ layer {
   }
 }
 layer {
-  name: "res3b1_branch2b_relu"
-  type: "ReLU"
-  bottom: "res3b1_branch2b"
-  top: "res3b1_branch2b"
-}
-layer {
   name: "res3b1"
   type: "Eltwise"
   bottom: "res3a"
@@ -999,8 +964,7 @@ layer {
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1067,8 +1031,7 @@ layer {
     kernel_size: 3
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1141,8 +1104,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1194,12 +1156,6 @@ layer {
   }
 }
 layer {
-  name: "res4a_branch2b_relu"
-  type: "ReLU"
-  bottom: "res4a_branch2b"
-  top: "res4a_branch2b"
-}
-layer {
   name: "res4a"
   type: "Eltwise"
   bottom: "res4a_branch1"
@@ -1228,8 +1184,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1302,8 +1257,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1355,12 +1309,6 @@ layer {
   }
 }
 layer {
-  name: "res4b1_branch2b_relu"
-  type: "ReLU"
-  bottom: "res4b1_branch2b"
-  top: "res4b1_branch2b"
-}
-layer {
   name: "res4b1"
   type: "Eltwise"
   bottom: "res4a"
@@ -1389,8 +1337,7 @@ layer {
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1457,8 +1404,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1531,8 +1477,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
     dilation: 2
   }
@@ -1585,12 +1530,6 @@ layer {
   }
 }
 layer {
-  name: "res5a_branch2b_relu"
-  type: "ReLU"
-  bottom: "res5a_branch2b"
-  top: "res5a_branch2b"
-}
-layer {
   name: "res5a"
   type: "Eltwise"
   bottom: "res5a_branch1"
@@ -1619,8 +1558,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1693,8 +1631,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
     dilation: 2
   }
@@ -1745,12 +1682,6 @@ layer {
       value: 0.0
     }
   }
-}
-layer {
-  name: "res5b_branch2b_relu"
-  type: "ReLU"
-  bottom: "res5b_branch2b"
-  top: "res5b_branch2b"
 }
 layer {
   name: "res5b"
@@ -2990,4 +2921,3 @@ layer {
     mining_type: MAX_NEGATIVE
   }
 }
-
