@@ -1,4 +1,4 @@
-name: "ResNet_VOC0712_SSD_300x300_test"
+name: "ResNet18_VOC0712_SSD_300x300_test"
 layer {
   name: "data"
   type: "AnnotatedData"
@@ -27,7 +27,7 @@ layer {
   annotated_data_param {
     batch_sampler {
     }
-    label_map_file: "labelmap.prototxt"
+    label_map_file: "labelmapprototxt"
   }
 }
 layer {
@@ -46,8 +46,7 @@ layer {
     kernel_size: 7
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -131,8 +130,7 @@ layer {
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -199,8 +197,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -273,8 +270,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -326,12 +322,6 @@ layer {
   }
 }
 layer {
-  name: "res2a_branch2b_relu"
-  type: "ReLU"
-  bottom: "res2a_branch2b"
-  top: "res2a_branch2b"
-}
-layer {
   name: "res2a"
   type: "Eltwise"
   bottom: "res2a_branch1"
@@ -360,8 +350,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -434,8 +423,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -487,12 +475,6 @@ layer {
   }
 }
 layer {
-  name: "res2b_branch2b_relu"
-  type: "ReLU"
-  bottom: "res2b_branch2b"
-  top: "res2b_branch2b"
-}
-layer {
   name: "res2b"
   type: "Eltwise"
   bottom: "res2a"
@@ -521,8 +503,7 @@ layer {
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -589,8 +570,7 @@ layer {
     kernel_size: 3
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -663,8 +643,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -716,12 +695,6 @@ layer {
   }
 }
 layer {
-  name: "res3a_branch2b_relu"
-  type: "ReLU"
-  bottom: "res3a_branch2b"
-  top: "res3a_branch2b"
-}
-layer {
   name: "res3a"
   type: "Eltwise"
   bottom: "res3a_branch1"
@@ -750,8 +723,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -824,8 +796,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -877,12 +848,6 @@ layer {
   }
 }
 layer {
-  name: "res3b1_branch2b_relu"
-  type: "ReLU"
-  bottom: "res3b1_branch2b"
-  top: "res3b1_branch2b"
-}
-layer {
   name: "res3b1"
   type: "Eltwise"
   bottom: "res3a"
@@ -911,8 +876,7 @@ layer {
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -979,8 +943,7 @@ layer {
     kernel_size: 3
     stride: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1053,8 +1016,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1106,12 +1068,6 @@ layer {
   }
 }
 layer {
-  name: "res4a_branch2b_relu"
-  type: "ReLU"
-  bottom: "res4a_branch2b"
-  top: "res4a_branch2b"
-}
-layer {
   name: "res4a"
   type: "Eltwise"
   bottom: "res4a_branch1"
@@ -1140,8 +1096,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1214,8 +1169,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1267,12 +1221,6 @@ layer {
   }
 }
 layer {
-  name: "res4b1_branch2b_relu"
-  type: "ReLU"
-  bottom: "res4b1_branch2b"
-  top: "res4b1_branch2b"
-}
-layer {
   name: "res4b1"
   type: "Eltwise"
   bottom: "res4a"
@@ -1301,8 +1249,7 @@ layer {
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1369,8 +1316,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1443,8 +1389,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
     dilation: 2
   }
@@ -1497,12 +1442,6 @@ layer {
   }
 }
 layer {
-  name: "res5a_branch2b_relu"
-  type: "ReLU"
-  bottom: "res5a_branch2b"
-  top: "res5a_branch2b"
-}
-layer {
   name: "res5a"
   type: "Eltwise"
   bottom: "res5a_branch1"
@@ -1531,8 +1470,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
   }
 }
@@ -1605,8 +1543,7 @@ layer {
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "gaussian"
-      std: 0.00999999977648
+      type: "msra"
     }
     dilation: 2
   }
@@ -1657,12 +1594,6 @@ layer {
       value: 0.0
     }
   }
-}
-layer {
-  name: "res5b_branch2b_relu"
-  type: "ReLU"
-  bottom: "res5b_branch2b"
-  top: "res5b_branch2b"
 }
 layer {
   name: "res5b"
@@ -2917,12 +2848,7 @@ layer {
       top_k: 400
     }
     save_output_param {
-      output_directory: "what"
-      output_name_prefix: "comp4_det_test_"
-      output_format: "VOC"
-      label_map_file: "labelmap.prototxt"
-      name_size_file: "test_name_size.txt"
-      num_test_image: 1572
+
     }
     code_type: CENTER_SIZE
     keep_top_k: 200
@@ -2946,4 +2872,3 @@ layer {
     name_size_file: "test_name_size.txt"
   }
 }
-
