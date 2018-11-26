@@ -10,7 +10,6 @@ from caffe import layers as L
 from caffe import params as P
 
 
-
 def UnpackVariable(var, num):
   assert len > 0
   if type(var) is list and len(var) == num:
@@ -26,8 +25,9 @@ def UnpackVariable(var, num):
         ret.append(var)
     return ret
 
+
 def ConvBNLayer(net, from_layer, out_layer, use_bn, use_relu, num_output,
-    kernel_size, pad, stride, dilation=1, use_scale=True, lr_mult=1,
+    kernel_size, pad, stride, use_scale=True, lr_mult=1,
     conv_prefix='', conv_postfix='', bn_prefix='', bn_postfix='_bn',
     scale_prefix='', scale_postfix='_scale', bias_prefix='', bias_postfix='_bias',
     **bn_params):
@@ -99,8 +99,7 @@ def ConvBNLayer(net, from_layer, out_layer, use_bn, use_relu, num_output,
     net[conv_name] = L.Convolution(net[from_layer], num_output=num_output,
         kernel_h=kernel_h, kernel_w=kernel_w, pad_h=pad_h, pad_w=pad_w,
         stride_h=stride_h, stride_w=stride_w, **kwargs)
-  if dilation > 1:
-    net.update(conv_name, {'dilation': dilation})
+
   if use_bn:
     bn_name = '{}{}{}'.format(bn_prefix, out_layer, bn_postfix)
     net[bn_name] = L.BatchNorm(net[conv_name], in_place=True, **bn_kwargs)
@@ -114,7 +113,8 @@ def ConvBNLayer(net, from_layer, out_layer, use_bn, use_relu, num_output,
     relu_name = '{}_relu'.format(conv_name)
     net[relu_name] = L.ReLU(net[conv_name], in_place=True)
 
-def ResShallowBody(net, from_layer, block_name, out2a, out2b, stride, use_branch1, dilation=1, **bn_param):
+
+def ResShallowBody(net, from_layer, block_name, out2a, out2b, stride, use_branch1, **bn_param):
     conv_prefix = 'res{}_'.format(block_name)
     conv_postfix = ''
     bn_prefix = 'bn{}_'.format(block_name)
@@ -143,19 +143,11 @@ def ResShallowBody(net, from_layer, block_name, out2a, out2b, stride, use_branch
     out_name = '{}{}'.format(conv_prefix, branch_name)
 
     branch_name = 'branch2b'
-    if dilation == 1:
-        ConvBNLayer(net, out_name, branch_name, use_bn=True, use_relu=True,
-                    num_output=out2b, kernel_size=3, pad=1, stride=1, use_scale=use_scale,
-                    conv_prefix=conv_prefix, conv_postfix=conv_postfix,
-                    bn_prefix=bn_prefix, bn_postfix=bn_postfix,
-                    scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
-    else:
-        pad = int((3 + (dilation - 1) * 2) - 1) / 2
-        ConvBNLayer(net, out_name, branch_name, use_bn=True, use_relu=True,
-                    num_output=out2b, kernel_size=3, pad=pad, stride=1, use_scale=use_scale,
-                    dilation=dilation, conv_prefix=conv_prefix, conv_postfix=conv_postfix,
-                    bn_prefix=bn_prefix, bn_postfix=bn_postfix,
-                    scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
+    ConvBNLayer(net, out_name, branch_name, use_bn=True, use_relu=True,
+                num_output=out2b, kernel_size=3, pad=1, stride=1, use_scale=use_scale,
+                conv_prefix=conv_prefix, conv_postfix=conv_postfix,
+                bn_prefix=bn_prefix, bn_postfix=bn_postfix,
+                scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
     branch2 = '{}{}'.format(conv_prefix, branch_name)
 
     res_name = 'res{}'.format(block_name)
@@ -164,7 +156,7 @@ def ResShallowBody(net, from_layer, block_name, out2a, out2b, stride, use_branch
     net[relu_name] = L.ReLU(net[res_name], in_place=True)
 
 
-def ResNet18Body(net, from_layer, use_pool5=True, use_dilation_conv5=False, **bn_param):
+def ResNet18Body(net, from_layer, use_pool5=True, **bn_param):
     conv_prefix = ''
     conv_postfix = ''
     bn_prefix = 'bn_'
@@ -198,14 +190,8 @@ def ResNet18Body(net, from_layer, use_pool5=True, use_dilation_conv5=False, **bn
         ResShallowBody(net, from_layer, block_name, out2a=256, out2b=256, stride=1, use_branch1=False, **bn_param)
         from_layer = 'res{}'.format(block_name)
 
-    stride = 2
-    dilation = 1
-    if use_dilation_conv5:
-        stride = 1
-        dilation = 2
-
-    ResShallowBody(net, from_layer, '5a', out2a=512, out2b=512, stride=stride, use_branch1=True, dilation=dilation, **bn_param)
-    ResShallowBody(net, 'res5a', '5b', out2a=512, out2b=512, stride=1, use_branch1=False, dilation=dilation, **bn_param)
+    ResShallowBody(net, from_layer, '5a', out2a=512, out2b=512, stride=2, use_branch1=True, **bn_param)
+    ResShallowBody(net, 'res5a', '5b', out2a=512, out2b=512, stride=1, use_branch1=False, **bn_param)
 
     if use_pool5:
         net.pool5 = L.Pooling(net.res5b, pool=P.Pooling.AVE, global_pooling=True)
@@ -217,7 +203,7 @@ net = caffe.NetSpec()
 net.data = L.Data(batch_size=1, backend=P.Data.LMDB, source='/mnt/data/ys/lmdb_ilsvrc12_10k/ilsvrc12_val_lmdb',
                              transform_param=dict(scale=1./255, crop_size=224)
                              )
-ResNet18Body(net, from_layer='data', use_pool5=True, use_dilation_conv5=False)
+ResNet18Body(net, from_layer='data', use_pool5=True)
 
 kwargs={
     'param': [
@@ -231,6 +217,6 @@ net.prob = L.Softmax(net[net.keys()[-1]])
 
 
 
-with open('train_resnet18.prototxt', 'w') as f:
+with open('train__resnet18.prototxt', 'w') as f:
     print('name: "{}_train"'.format('resnet18'), file=f)
     print(net.to_proto(), file=f)
