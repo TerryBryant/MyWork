@@ -116,11 +116,11 @@ int main(int argc, char* argv[])
 //    cout<<endl;
 
     std::string file_txt = "deploy.prototxt";
-    std::string file_model = "model.caffemodel";
+    std::string file_model = "deploy.caffemodel";
 
 
     std::string file_txt_out = "deploy_aes.prototxt";
-    std::string file_model_out = "model_aes.caffemodel";
+    std::string file_model_out = "deploy_aes.caffemodel";
 
 
     if(0 != encrypt(file_txt, file_txt_out))
