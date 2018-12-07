@@ -68,6 +68,7 @@ int encrypt(const string& src_file, const string& dst_file){
         return -1;
     }
 
+	delete[] file_buf;
     return 0;
 }
 
