@@ -6749,7 +6749,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -6822,7 +6822,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -6902,7 +6902,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -6975,7 +6975,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -7055,7 +7055,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -7128,7 +7128,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -7208,7 +7208,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -7281,7 +7281,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -7361,7 +7361,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -7434,7 +7434,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -7514,7 +7514,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -7587,7 +7587,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -7667,7 +7667,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -7740,7 +7740,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -7820,7 +7820,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -7893,7 +7893,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -7973,7 +7973,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -8046,7 +8046,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -8126,7 +8126,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -8199,7 +8199,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -8279,7 +8279,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -8352,7 +8352,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -8432,7 +8432,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -8505,7 +8505,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -8585,7 +8585,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -8658,7 +8658,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -8738,7 +8738,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -8811,7 +8811,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -8891,7 +8891,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -8964,7 +8964,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -9044,7 +9044,7 @@ layer {
   convolution_param {
     num_output: 128
     bias_term: false
-    pad: 1
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -9117,7 +9117,7 @@ layer {
   convolution_param {
     num_output: 32
     bias_term: false
-    pad: 1
+    pad: 2
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -10425,16 +10425,9 @@ layer {
       top_k: 400
     }
     save_output_param {
-      output_directory: "/home/terry/data/VOCdevkit/results/VOC2007/SSD_300x300/Main"
-      output_name_prefix: "comp4_det_test_"
-      output_format: "VOC"
-      label_map_file: "data/VOC0712/labelmap_voc.prototxt"
-      name_size_file: "data/VOC0712/test_name_size.txt"
-      num_test_image: 2000
     }
     code_type: CENTER_SIZE
     keep_top_k: 200
     confidence_threshold: 0.00999999977648
   }
 }
-
