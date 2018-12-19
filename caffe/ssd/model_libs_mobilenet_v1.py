@@ -148,9 +148,8 @@ def depthwise_block(net, from_layer, out_layer, out_dwise, out_sep, stride, dila
                     bn_prefix=bn_prefix, bn_postfix=bn_postfix + '/sep/bn',
                     scale_prefix=scale_prefix, scale_postfix=scale_postfix + '/sep/scale', **bn_param)
     else:
-        pad = int((3 + (dilation - 1) * 2) - 1) / 2
         ConvBNLayer(net, net.keys()[-1], '', use_bn=True, use_relu=True,
-                    num_output=out_sep, kernel_size=1, pad=pad, stride=1, use_scale=use_scale,
+                    num_output=out_sep, kernel_size=1, pad=0, stride=1, use_scale=use_scale,
                     dilation=dilation, conv_prefix=conv_prefix, conv_postfix=conv_postfix + '/sep',
                     bn_prefix=bn_prefix, bn_postfix=bn_postfix + '/sep/bn',
                     scale_prefix=scale_prefix, scale_postfix=scale_postfix + '/sep/scale', **bn_param)
