@@ -21,7 +21,7 @@
 
 
 ## 2018-12-18 update
-有关dilation的问题，我之前还是没有理解清楚，后面去查了资料，现在更新一下。根据公式：output = (input - k + 2 * p - (k-1)(d-1)) / s + 1，
+有关dilation的问题，我之前还是没有理解清楚，后面去查了资料，现在更新一下。根据公式：output = (input - k + 2 * p - (k-1)*(d-1)) / s + 1，
 其中k是卷积核尺寸，p是padding，d是dilation尺寸，s是stride，input和output是输入输出尺寸。现在已知的是，stride从2变成了1（主要是在basenet
 的最后几层，特征图尺寸不能再减小了），此时dilation应该变为2，为了保持输入输出尺寸一致，根据以上公式可以得到：p = k - 1
 
