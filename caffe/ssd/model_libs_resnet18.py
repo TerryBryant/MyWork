@@ -157,9 +157,9 @@ def ResShallowBody(net, from_layer, block_name, out2a, out2b, stride, use_branch
                     bn_prefix=bn_prefix, bn_postfix=bn_postfix,
                     scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
     else:
-        pad = int((3 + (dilation - 1) * 2) - 1) / 2
+        # pad = int((3 + (dilation - 1) * 2) - 1) / 2，更新为pad = k - 1， 2018-12-19
         ConvBNLayer(net, out_name, branch_name, use_bn=True, use_relu=False,
-                    num_output=out2b, kernel_size=3, pad=pad, stride=1, use_scale=use_scale,
+                    num_output=out2b, kernel_size=3, pad=2, stride=1, use_scale=use_scale,
                     dilation=dilation, conv_prefix=conv_prefix, conv_postfix=conv_postfix,
                     bn_prefix=bn_prefix, bn_postfix=bn_postfix,
                     scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
