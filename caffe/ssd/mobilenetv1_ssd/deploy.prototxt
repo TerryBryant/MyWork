@@ -1758,7 +1758,7 @@ layer {
   convolution_param {
     num_output: 1024
     bias_term: false
-    pad: 2
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
@@ -1904,7 +1904,7 @@ layer {
   convolution_param {
     num_output: 1024
     bias_term: false
-    pad: 2
+    pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
