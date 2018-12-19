@@ -244,26 +244,26 @@ def DenseBlock(net, from_layer, out_layer, dilation=1, **bn_param):
 
     out_name = out_layer + '/x1'
 
+    NewConvBNLayer(net, from_layer, out_name, use_conv=True, use_bn=True, use_relu=True,
+                   num_output=128, kernel_size=1, pad=0, stride=1,
+                   dilation=dilation, conv_prefix=conv_prefix, conv_postfix=conv_postfix,
+                   bn_prefix=bn_prefix, bn_postfix=bn_postfix,
+                   scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
+
+    out_name = out_layer + '/x2'
+
     if dilation == 1:
-        NewConvBNLayer(net, from_layer, out_name, use_conv=True, use_bn=True, use_relu=True,
-                       num_output=128, kernel_size=1, pad=0, stride=1,
+        NewConvBNLayer(net, net.keys()[-1], out_name, use_conv=True, use_bn=True, use_relu=True,
+                       num_output=32, kernel_size=3, pad=1, stride=1,
                        dilation=dilation, conv_prefix=conv_prefix, conv_postfix=conv_postfix,
                        bn_prefix=bn_prefix, bn_postfix=bn_postfix,
                        scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
     else:
-        # when use dilation, set the pad to 1, to make sure the output size of pool4 and conv5_1/x2 correspond
-        NewConvBNLayer(net, from_layer, out_name, use_conv=True, use_bn=True, use_relu=True,
-                       num_output=128, kernel_size=1, pad=1, stride=1,
+        NewConvBNLayer(net, net.keys()[-1], out_name, use_conv=True, use_bn=True, use_relu=True,
+                       num_output=32, kernel_size=3, pad=2, stride=1,
                        dilation=dilation, conv_prefix=conv_prefix, conv_postfix=conv_postfix,
                        bn_prefix=bn_prefix, bn_postfix=bn_postfix,
                        scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
-
-    out_name = out_layer + '/x2'
-    NewConvBNLayer(net, net.keys()[-1], out_name, use_conv=True, use_bn=True, use_relu=True,
-                   num_output=32, kernel_size=3, pad=1, stride=1,
-                   dilation=dilation, conv_prefix=conv_prefix, conv_postfix=conv_postfix,
-                   bn_prefix=bn_prefix, bn_postfix=bn_postfix,
-                   scale_prefix=scale_prefix, scale_postfix=scale_postfix, **bn_param)
 
     block_name = 'concat_{}'.format(out_layer[4:])  # for example, 'conv3_1' to '3_1'
     net[block_name] = L.Concat(net[from_layer], net[net.keys()[-1]])
