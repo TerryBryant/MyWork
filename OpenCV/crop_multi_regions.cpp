@@ -16,6 +16,7 @@ Point P1(0, 0);
 Point P2(0, 0);
 float fResizeRatio = 1.0f;
 const int iWindowSize = 200;
+const int iWindowSizeLarge = 250;
 
 const char* winName = "Crop Image";
 const char* displayName = "display Image";
@@ -45,16 +46,17 @@ void showImage() {
 		ROI = src(cropRect);
 	}
 
-	rectangle(img, cropRect, Scalar(0, 255, 0), 1, 8, 0);
+
+	rectangle(img, cropRect, Scalar(0, 255, 0), int(ceil(1 / fResizeRatio)), 8, 0);	//线的粗度应该与缩放比例有关系，否则看不见
 	imshow(winName, img);
 }
 
 Rect expandROI(int height, int width) {
 	Rect r;
-	r.x = cropRect.x - int(1.4 * cropRect.width);
-	r.y = cropRect.y - int(0.8 * cropRect.height);
-	r.width = int(2.8 * cropRect.width);
-	r.height = int(1.6 * cropRect.height);
+	r.x = cropRect.x - int(1.25 * cropRect.width);
+	r.y = cropRect.y - int(0.6 * cropRect.height);
+	r.width = int(3.5 * cropRect.width);
+	r.height = int(2.0 * cropRect.height);
 
 	r.x = r.x > 0 ? r.x : 0;
 	r.y = r.y > 0 ? r.y : 0;
@@ -141,7 +143,7 @@ int main(int argc, char** argv)
 	cout << "------> Press 'Esc' to quit" << endl << endl;
 
 	// 遍历目录下所有图片
-	//String imgPath = "D:/head";
+	//String imgPath = "D:/head5";
 	//String newImgPath = "D:/head2";
 	String imgPath = argv[1];
 	String newImgPath = argv[2];
@@ -161,6 +163,9 @@ int main(int argc, char** argv)
 		if (minSide < iWindowSize) {
 			fResizeRatio = iWindowSize * 1.0f / minSide;
 		}
+		if (minSide > iWindowSizeLarge) {
+			fResizeRatio = iWindowSizeLarge * 1.0f / minSide;
+		}
 
 		// 获取文件名
 		int strBegin = imgFiles[i].find_last_of('\\');
@@ -170,8 +175,11 @@ int main(int argc, char** argv)
 		// 缩放显示窗口
 		namedWindow(winName, CV_WINDOW_NORMAL);
 		namedWindow(displayName, CV_WINDOW_NORMAL);
-		resizeWindow(winName, Size(int(fResizeRatio * srcWidth), int(fResizeRatio * srcHeight)));
-		resizeWindow(displayName, Size(int(fResizeRatio * srcWidth), int(fResizeRatio * srcHeight)));
+		resizeWindow(winName, int(fResizeRatio * srcWidth), int(fResizeRatio * srcHeight));
+		resizeWindow(displayName, int(fResizeRatio * srcWidth), int(fResizeRatio * srcHeight));
+		moveWindow(winName, 100, 100);
+		moveWindow(displayName, 100 + int(fResizeRatio * srcWidth), 100);
+
 		setMouseCallback(winName, onMouse, NULL);
 		imshow(winName, src);
 
@@ -188,7 +196,7 @@ int main(int argc, char** argv)
 				cout << "  Saved " << imgName << endl;
 
 				//将已经标注好的rectangle画出来
-				rectangle(srcDisplay, cropRect, Scalar(0, 0, 255), 1, 8, 0);
+				rectangle(srcDisplay, cropRect, Scalar(0, 0, 255), int(ceil(1 / fResizeRatio)), 8, 0);
 				imshow(displayName, srcDisplay);
 			}
 			if (c == '6') cropRect.x++;
