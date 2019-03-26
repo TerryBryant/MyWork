@@ -109,7 +109,7 @@ tensorflow::Status ReadTensorFromImageFile(const string& file_name, const int in
 
 int main()
 {
-	const std::string model_path = "E:/ProjectPython/prj_tensorflow/yzm/frozen_model_12000.pb";    // tensorflow模型文件
+	const std::string model_path = "E:/ProjectPython/prj_tensorflow/yzm/frozen_model_12000.pb";// tensorflow模型文件，注意不能含有中文
 	const std::string image_path = "captcha/00e7.png";    // 待inference的图片
 	const std::string input_name = "x_input";    // 模型文件中的输入名
 	const std::string output_name = "x_predict";    // 模型文件中的输出名
