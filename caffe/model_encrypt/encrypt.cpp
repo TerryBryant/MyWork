@@ -38,33 +38,25 @@ int encrypt(const string& src_file, const string& dst_file){
 
     // 将string写入unsigned char数组中，用于加密
     int file_len = static_cast<int>(file_content.length());
-    auto *file_buf = new unsigned char[file_len];
+    int file_len2 = int(ceil(file_len / 16.0) * 16);//注意补零
+    auto *file_buf = new unsigned char[file_len2];
+    memset(file_buf, 0, file_len2);
+
     file_content.copy(reinterpret_cast<char*>(file_buf), file_len);
     aes.Cipher((void *)file_buf, file_len);    // 加密
 
     // 加密后的内容写入新文件
     std::ofstream fout;
-    fout.open(dst_file);
+    fout.open(dst_file, std::ios::out | std::ios::binary);
     if(fout.is_open()){
-        fout.write(reinterpret_cast<char*>(file_buf), file_len);
+        fout.write(reinterpret_cast<char*>(file_buf), file_len2);   // 因为加密的过程中自动补零了，所以加密文件的长度为file_len2
+        char dataLen[10] = {0};
+        sprintf(dataLen, "%10d", file_len);
+        fout.write(dataLen, 10);
+        //fout.write(std::to_string(file_len).c_str(), 10);   // 文件的字节数最多10位数，足以存放10G以内
         fout.close();
     } else {
         cout << "Can't open dst file: " << dst_file << endl;
-        return -1;
-    }
-
-
-    // （可选）恢复加密内容
-    string file_out2("deploy_aes_restore.prototxt");
-    aes.InvCipher((void *)file_buf, file_len);    // 解密
-
-    std::ofstream fout2;
-    fout2.open(file_out2);
-    if(fout2.is_open()){
-        fout2.write(reinterpret_cast<char*>(file_buf), file_len);
-        fout2.close();
-    } else {
-        cout << "Can't open restore file: " << file_out2 << endl;
         return -1;
     }
 
@@ -127,10 +119,10 @@ int main(int argc, char* argv[])
     if(0 != encrypt(file_txt, file_txt_out))
         return -1;
 
-//    if(0 != encrypt(file_model, file_model_out))
-//        return -1;
+    if(0 != encrypt(file_model, file_model_out))
+        return -1;
 
-    int a = 0;
+    return 1;
     
 }
 
