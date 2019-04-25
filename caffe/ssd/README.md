@@ -26,3 +26,7 @@
 的最后几层，特征图尺寸不能再减小了），此时dilation应该变为2，为了保持输入输出尺寸一致，根据以上公式可以得到：p = k - 1
 
 另外值得注意的是，如果你需要使用tensorrt对ssd进行加速，那么需要将dilation改为1（相应调整padding），目前它还不支持dilation大于1的卷积
+
+
+## 2019-04-25 update
+tensorrt5.1版本已支持dilation>1的卷积
