@@ -6,7 +6,7 @@
 from __future__ import print_function
 import os
 from multiprocessing import Process
-import fcntl    # Notice that windows platform doesn't has this library, also notice that the last word is l, not arabic number 1
+import fcntl    # Notice that windows platform doesn't have this library, also notice that the last word is l, not arabic number 1
 
 root_path = os.getcwd()
 
