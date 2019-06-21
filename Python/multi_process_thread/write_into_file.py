@@ -19,7 +19,7 @@ def run_proc(lines_):
         if len(res) > 0:
             with open(os.path.join(root_path, 'output.txt'), 'a+') as fw:
                     fcntl.flock(fw, fcntl.LOCK_EX)
-                    fw.write(res[index1:index-1] + ' ' + res[index + index2: index + index22 + 4] + '\n')
+                    fw.write(res + '\n')
                 
             print('Find one!')
                 
