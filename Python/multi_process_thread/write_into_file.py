@@ -26,17 +26,19 @@ def run_proc(lines_):
                     
             
 
-if __name__ == '__main__':
+if __name__ == '__main__':		 # Notie that multi-processor program must run in the '__main__' function
     num_processor = 10      # num of processors you want to use
     with open(os.path.join(root_path, 'filenames.txt'), 'r') as f:
         lines = f.readlines()
 
-    lines_len = len(lines)
-    portion = lines_len // num_processor
+    portion = len(lines) // num_processor
 
     record = []
-    for i in range(num_processor):
-        p = Process(target=run_proc, args=(lines[i * portion: (i + 1) * portion],))
+    for i in range(num_processor + 1):
+        if i == num_processor:
+            p = Process(target=run_proc, args=(lines[i * portion:],))
+        else:
+            p = Process(target=run_proc, args=(lines[i * portion: (i + 1) * portion],))
         p.start()
         record.append(p)
 
