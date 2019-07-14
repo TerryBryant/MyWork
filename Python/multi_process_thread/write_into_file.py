@@ -3,9 +3,11 @@
 # If content found, then write to the 'output.txt'
 # Pay attention that the file lock is different from value lock
 # By TerryBryant, 2019/06/20
+# Update in 2019/07/14, use pool to create new processor seems to be faster, see more from below website
+# https://www.ellicium.com/python-multiprocessing-pool-process/
 from __future__ import print_function
 import os
-from multiprocessing import Process
+import multiprocessing
 import fcntl    # Notice that windows platform doesn't have this library, also notice that the last word is l, not arabic number 1
 
 root_path = os.getcwd()
@@ -32,16 +34,23 @@ if __name__ == '__main__':		 # Notie that multi-processor program must run in th
         lines = f.readlines()
 
     portion = len(lines) // num_processor
+	
+	pool = multiprocessing.Pool(num_processor + 1)	# pool takes less time to create 
+	for i in range(num_processor + 1):
+	if i == num_processor:
+		pool.map_async(run_proc, (lines[i * portion:],))	# you can use 'get()' method to retrieve the return value
+	else:
+		pool.map_async(run_proc, (lines[i * portion: (i + 1) * portion],))
 
-    record = []
-    for i in range(num_processor + 1):
-        if i == num_processor:
-            p = Process(target=run_proc, args=(lines[i * portion:],))
-        else:
-            p = Process(target=run_proc, args=(lines[i * portion: (i + 1) * portion],))
-        p.start()
-        record.append(p)
+#     record = []
+#     for i in range(num_processor + 1):
+#         if i == num_processor:
+#             p = multiprocessing.Process(target=run_proc, args=(lines[i * portion:],))
+#         else:
+#             p = multiprocessing.Process(target=run_proc, args=(lines[i * portion: (i + 1) * portion],))
+#         p.start()
+#         record.append(p)
 
-    for r in record:
-        r.join()
+#     for r in record:
+#         r.join()
 
