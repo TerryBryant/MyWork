@@ -37,10 +37,13 @@ if __name__ == '__main__':		 # Notie that multi-processor program must run in th
 	
 	pool = multiprocessing.Pool(num_processor + 1)	# pool takes less time to create 
 	for i in range(num_processor + 1):
-	if i == num_processor:
-		pool.map_async(run_proc, (lines[i * portion:],))	# you can use 'get()' method to retrieve the return value
-	else:
-		pool.map_async(run_proc, (lines[i * portion: (i + 1) * portion],))
+        if i == num_processor:
+            pool.map_async(run_proc, (lines[i * portion:],))  # you can use 'get()' method to retrieve the return value
+        else:
+            pool.map_async(run_proc, (lines[i * portion: (i + 1) * portion],))
+
+    pool.close()
+    pool.join()
 
 #     record = []
 #     for i in range(num_processor + 1):
