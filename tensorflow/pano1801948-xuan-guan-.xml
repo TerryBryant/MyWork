@@ -1,0 +1,34 @@
+<annotation>
+    <folder>VOC2007</folder>
+    <filename>000000.jpg</filename>
+    <size>
+        <width>1024</width>
+        <height>512</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>door</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>566</xmin>
+            <ymin>110</ymin>
+            <xmax>861</xmax>
+            <ymax>432</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>closed_door</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>286</xmin>
+            <ymin>98</ymin>
+            <xmax>566</xmax>
+            <ymax>435</ymax>
+        </bndbox>
+    </object>
+</annotation>
